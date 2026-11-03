@@ -42,6 +42,11 @@ def _style_diff_axis(ax, diffs):
     ax.set_yticks(ticks, _diff_labels(ticks))
     ax.set_ylim(-max(limit, biggest) - 1, max(limit, biggest) + 1)
     ax.axhline(0, color="dimgray", linewidth=1.2, zorder=2)
+    _add_side_labels(ax, limit)
+
+
+def _add_side_labels(ax, limit):
+    """'Older than opponent' above and 'Younger than opponent' below 0."""
     side = ax.get_yaxis_transform()
     for y, text in [(0.75 * limit, "Older than\nopponent"),
                     (-0.75 * limit, "Younger than\nopponent")]:
