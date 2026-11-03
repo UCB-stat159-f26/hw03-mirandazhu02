@@ -46,8 +46,8 @@ def _download_career_js(name_param):
 
 
 def _download_player_info(name_param):
-    """Full name and birthdate (YYYYMMDD) from the player's page."""
-    page = _fetch(f"{BASE_URL}/cgi-bin/player.cgi?p={name_param}") or ""
+    """Full name and birthdate (YYYYMMDD) from the player's js file."""
+    page = _fetch(f"{BASE_URL}/jsmatches/{name_param}.js") or ""
     dob = re.search(r"dob\s*=\s*(\d{8})", page)
     fullname = re.search(r"fullname\s*=\s*'([^']+)'", page)
     if dob is None:
