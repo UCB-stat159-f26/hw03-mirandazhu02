@@ -9,7 +9,7 @@ description = "Get a tennis player's career matches from Tennis Abstract and plo
 readme = "README.md"
 authors = [{ name = "Miranda Zhu" }]
 requires-python = ">=3.9"
-dependencies = ["pandas", "matplotlib", "requests"]
+dependencies = ["pandas", "matplotlib>=3.5", "requests"]
 
 [project.optional-dependencies]
 test = ["pytest"]
