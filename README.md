@@ -39,6 +39,7 @@ Each row is one match. The main columns are:
 | column | meaning |
 |---|---|
 | `player` | full name of the player |
+| `last_name` | last name of the player (used in the plot labels) |
 | `date` | start date of the tournament |
 | `opponent` | name of the opponent |
 | `result` | `Win` or `Loss` (from the player's point of view) |

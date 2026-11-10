@@ -1,6 +1,6 @@
-# tests for turning a player name into the name used in tennis abstract urls
+# tests for helpers in download.py: player names and js variables
 # (no internet needed: these do not download anything)
-from tennis_career.download import _name_param
+from tennis_career.download import _js_value, _name_param
 
 
 def test_name_with_space():
@@ -22,3 +22,16 @@ def test_name_in_capitals():
 
 def test_empty_name():
     assert _name_param("   ") == ""
+
+
+def test_js_value_reads_numbers_and_text():
+    # same style as the top of a player's js file, e.g. JuanMartinDelPotro.js
+    js_text = ("var fullname = 'Juan Martin Del Potro';\n"
+               "var lastname = 'Del Potro';\nvar dob=19880923;\n")
+    assert _js_value(js_text, "fullname") == "Juan Martin Del Potro"
+    assert _js_value(js_text, "lastname") == "Del Potro"
+    assert _js_value(js_text, "dob") == "19880923"
+
+
+def test_js_value_missing():
+    assert _js_value("var dob=19880923;", "lastname") is None

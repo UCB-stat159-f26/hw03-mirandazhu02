@@ -45,14 +45,21 @@ def _download_career_js(name_param):
     return js_text
 
 
+def _js_value(js_text, name):
+    """Value of a js variable like `var dob=19810926;` or `var x = 'a';`."""
+    found = re.search(rf"\b{name}\s*=\s*'?([^';\n]*)'?\s*;", js_text)
+    return found.group(1) if found else None
+
+
 def _download_player_info(name_param):
-    """Full name and birthdate (YYYYMMDD) from the player's js file."""
+    """Full name, last name and birthdate (YYYYMMDD) from the player's js file."""
     page = _fetch(f"{BASE_URL}/jsmatches/{name_param}.js") or ""
-    dob = re.search(r"dob\s*=\s*(\d{8})", page)
-    fullname = re.search(r"fullname\s*=\s*'([^']+)'", page)
-    if dob is None:
+    dob = _js_value(page, "dob")
+    if not dob or not dob.isdigit():
         raise ValueError(f"Could not find the birthdate of '{name_param}'.")
-    return (fullname.group(1) if fullname else name_param), dob.group(1)
+    fullname = _js_value(page, "fullname") or name_param
+    lastname = _js_value(page, "lastname") or fullname.split()[-1]
+    return fullname, lastname, dob
 
 
 def get_career_data(player_name):
@@ -65,5 +72,7 @@ def get_career_data(player_name):
     if not name_param:
         raise ValueError("Please give the name of a player, e.g. 'Serena Williams'.")
     js_text = _download_career_js(name_param)
-    fullname, dob = _download_player_info(name_param)
-    return clean_career(js_text, fullname, dob)
+    fullname, lastname, dob = _download_player_info(name_param)
+    career = clean_career(js_text, fullname, dob)
+    career.insert(1, "last_name", lastname)
+    return career

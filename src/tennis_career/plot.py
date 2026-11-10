@@ -62,6 +62,13 @@ def _style_frame(ax):
     ax.tick_params(length=0, colors=GRAY, labelsize=11)
 
 
+def _last_name(career):
+    """Player's last name, e.g. 'Del Potro' (last word of the name if missing)."""
+    if "last_name" in career:
+        return career["last_name"].iloc[0]
+    return career["player"].iloc[0].split()[-1]
+
+
 def plot_career(career):
     """Scatter plot of a player's age vs. how much older than each opponent.
 
@@ -69,7 +76,7 @@ def plot_career(career):
     Returns the matplotlib Axes so the plot can be changed or saved.
     """
     name = career["player"].iloc[0]
-    last_name = name.split()[-1]
+    last_name = _last_name(career)
     ages = career["player_age"]
     fig, ax = plt.subplots(figsize=(10, 6.5))
     _draw_points(ax, career, last_name)
