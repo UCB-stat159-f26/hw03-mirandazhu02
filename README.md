@@ -61,6 +61,10 @@ It also has `tournament`, `surface`, `round`, `score` and `opp_country`.
   week or two.
 - The data only covers what Tennis Abstract has in the career file. For
   some players (for example Rafael Nadal), recent seasons are not in it.
+- Some current players (for example Carlos Alcaraz and Jannik Sinner) have
+  a page on Tennis Abstract but no career file. For them,
+  `get_career_data()` raises an error that says so, instead of saying the
+  player does not exist.
 
 ## Tests
 

@@ -34,14 +34,27 @@ def _fetch(url):
     return response.text
 
 
+def _player_exists(name_param):
+    """True if Tennis Abstract has a player page (with a name) for name_param."""
+    page = _fetch(f"{BASE_URL}/cgi-bin/player.cgi?p={name_param}") or ""
+    return _js_value(page, "fullname") is not None
+
+
+def _not_found_message(name_param):
+    """Error message for a player without a career js file."""
+    # some current players (e.g. Carlos Alcaraz) have a page but no career file
+    if _player_exists(name_param):
+        return (f"Tennis Abstract has a page for '{name_param}' but no career"
+                " match file, so the career matches cannot be downloaded.")
+    return (f"Could not find a player called '{name_param}' on Tennis Abstract."
+            " Check the spelling, e.g. 'Serena Williams' or 'Rafael Nadal'.")
+
+
 def _download_career_js(name_param):
     """Text of the player's career js file, e.g. SerenaWilliamsCareer.js."""
     js_text = _fetch(f"{BASE_URL}/jsmatches/{name_param}Career.js")
     if js_text is None:
-        raise ValueError(
-            f"Could not find a player called '{name_param}' on Tennis Abstract."
-            " Check the spelling, e.g. 'Serena Williams' or 'Rafael Nadal'."
-        )
+        raise ValueError(_not_found_message(name_param))
     return js_text
 
 
