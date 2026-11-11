@@ -1,0 +1,91 @@
+AI Documentation - STAT 159 HW3, tennis_career package
+======================================================
+ 
+Miranda Zhu
+-----------
+ 
+Tool: Claude Code, Anthropic; Claude (claude.ai), Anthropic
+Model: Claude Opus 5.5
+ 
+I used Claude Code to help me turn my ideas into code. I told it
+what each function should do, it wrote most of the code, and I
+checked, tested, and decided what to keep. At the end, I used Claude
+(claude.ai) to review my files and help revise the documentation.
+ 
+Main uses:
+  - Draft the package code.
+    -> Drafted the functions for downloading the Career.js and player
+       files, cleaning them into a data frame, and making the plot,
+       split into small functions to stay under the 20-line limit.
+ 
+  - Handle female vs. male career files.
+    -> Helped write _has_birthdates() so that column 16 is read as a
+       birthdate for female players and as an age for male players.
+ 
+  - Write tests that do not use the internet.
+    -> Helped write tests/test_clean.py and tests/test_download.py
+       using the mock JS files from the instructions.
+ 
+  - Debug problems I found while running the package.
+    -> Tests failing in a fresh clone, and the package being installed
+       but not importable.
+ 
+  - Review the package and improve documentation.
+    -> Reran the tests in a clean environment, checked function
+       lengths, and helped revise README.md and this file. This
+       included suggesting wording for the part of my Reflections
+       about using Claude Code and Git; the Reflections are my own.
+ 
+Claude suggested changes to both code and documentation. I reviewed
+the suggestions, checked them against the assignment requirements
+and by running pytest and the public functions on several players,
+and made the final decisions about what to include.
+ 
+Example Prompts and Outputs
+---------------------------
+ 
+Representative paraphrases of prompts and responses.
+ 
+1. Rafael Nadal's File Is Different
+ 
+   Prompt:
+   "The package works for Serena Williams but not for Rafael Nadal.
+   Column 16 has values like 22.264202601. Why?"
+ 
+   Output:
+   Explained that male career files give the opponent's age instead
+   of the birthdate, and that the player's own birthdate is in a
+   separate file. Suggested checking which format a file uses before
+   calculating ages, which became _has_birthdates().
+ 
+2. Players With No Career File
+ 
+   Prompt:
+   "Why does the package say Jannik Sinner doesn't exist? He has a
+   page on Tennis Abstract."
+ 
+   Output:
+   Found that some players have a page but no Career.js file, and
+   that Sinner only has an old file with 34 matches from 2018. I
+   decided not to plot that file, because calling it his "career"
+   would be misleading, and explained this limit in the README.
+ 
+3. Tests Failing in a Fresh Clone
+ 
+   Prompt:
+   "pytest passes in my folder but fails after I clone the repo
+   again. Why can't it find the package?"
+ 
+   Output:
+   Explained that pytest could not find the package in the src/
+   folder and suggested adding pythonpath = ["src"] to
+   pyproject.toml, which I did.
+ 
+4. Installed but Cannot Import
+ 
+   Prompt:
+   "pip install worked, but import tennis_career fails."
+ 
+   Output:
+   Explained that pip and python in my terminal pointed to two
+   different Pythons, and suggested using python -m pip install.
